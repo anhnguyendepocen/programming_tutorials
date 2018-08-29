@@ -5,5 +5,7 @@ This introduction to programming with R and Python targeted to senior undergradu
 More information: [https://christophrenkl.github.io/programming_intro]
 
 ### Contact
-[Hansen Johnson](https://github.com/hansenjohnson)
-[Christoph Renkl](https://github.com/christophrenkl)
+[Hansen Johnson](mailto:hansen.johnson@dal.ca)
+ 
+[Christoph Renkl](mailto:christoph.renkl@dal.ca)
+
