@@ -4,7 +4,7 @@
 
 # R is a programming language. As such it is beautifully, and sometimes painfully logical. Be prepared to make mistakes and be frustrated, but we encourage you to stick with it long enough to recognize the power and efficiency of this tool.
 
-# Quick tour --------------------------------------------------------------
+# Tour of Rstudio ---------------------------------------------------------
 
 # <- these hashtags denote 'comments', which are not noticed by R and intended to document your code
 
@@ -17,8 +17,7 @@
 
 # I like to enter code directly into the script (here, where I'm typing), and then run this code 'line-by-line' using the keyboard shortcut command+enter (on a mac, probably similar on a PC). Other users might prefer to enter their code in the console and only move to the script what they would like to save for later. They also may opt to use the 'Run' button to run the entire script (or highlighted text) instead of the keyboard shortcut. There's no 'right way', you'll figure out a system that works for you.
 
-# simple operations -------------------------------------------------------
-# run through these steps line by line to see the answers appear in the console
+# Simple operations -------------------------------------------------------
 
 # basic math
 3+3 # addition
@@ -28,14 +27,18 @@ sqrt(64) # square root
 (12-3)*10^(-1.5) # more complex operation
 4/6
 
-# variables ---------------------------------------------------------------
-
 x = 12 # use the equals sign or arrow (<-) to assign a variable. This literally means, 'assign 12 to the variable named x'. Now you see x show up in the global environment
-x <- 12
+x <- 12 # the arrow (<-) works the same way
 
 15 - x # viola!
 
-# data types --------------------------------------------------------------
+# we've added some things to the environment, which can get cluttered over time if you don't keep things tidy. You can remove variables one at a time using 
+rm(x) # removes x
+# you can also clear all variables by clicking on the little broom or running the line
+rm(list=ls())
+# you should 'comment this out' (i.e. put a hashtag in front) if you don't want R to do this.
+
+# Data types --------------------------------------------------------------
 
 # ADD MORE HERE #
 
@@ -55,7 +58,7 @@ vec3[4]
 # make data frame
 df = data.frame(vec1,vec2,vec3)
 
-# functions ---------------------------------------------------------------
+# Introduction to functions -----------------------------------------------
 
 # manually calculate the mean of 'vec'
 (1+2+3+4+5+6+7+8)/8
@@ -81,46 +84,44 @@ help(mean)
 ?mean
 # Note: if you enter the function without parenthases you'll get the source code of the function (wayyy beyond the scope of this intro), or at least where R stores that info. This is what's going on under the hood.
 
-# environment -------------------------------------------------------------
+# Reading in data ---------------------------------------------------------
 
-# we've added some things to the environment, which can get cluttered over time if you don't keep things tidy. You can remove variables one at a time using 
-rm(x) # removes x
-# you can also clear all variables by clicking on the little broom or running the line
-rm(list=ls())
-# you should 'comment this out' (i.e. put a hashtag in front) if you don't want R to do this.
-
-# reading in data ---------------------------------------------------------
-
-getwd() # get working directory
-setwd("/Users/hansenjohnson/Documents/Courses/2017_winter/FO/introduction_to_R/") # set working directory to your desktop. This is the place on your computer where R 'lives' during your session, as in where it will look for files, save data, etc unless told otherwise. This file path might be quite different for your machine, particularly if it's a windows...
+setwd("~/Projects/programming_tutorials/") # set working directory. This is the place on your computer where R 'lives' during your session, as in where it will look for files, save data, etc unless told otherwise. This file path might be quite different for your machine, particularly if it's a windows...
 
 # go to brightspace and save the data file for the first tutorial to your desktop (i.e. your current 'working directory')
-data = read.table("FO2017Tutor01.dat", sep = ',') # read in the .dat file for the tutorial assignment
+ctd = read.csv("R/01/data/ctd.csv") # read in the .csv file for the tutorial assignment
 
-# manipulating a data frame -----------------------------------------------
 # we've imported some data, now let's look at it. Click the little table on the far right of the row in your global environment, or use the View() function
 
-# it automatically named the columns strange values. let's rename
-colnames(data) = c('time', 'col2')
-# the c() tells R to expect multiple arguments (i.e. a list). time and col2 are now the column names
+# get summary of object 'structure'
+str(ctd)
 
-# use find replace (magnifying glass or command+f) to put in real column names
+# get summary of data within object
+summary(ctd)
 
 # let's look at only time
-data$time # this is done using a dollar sign. It tells R to look for 'time' within the 'data' variable
-
-# so we don't need to type data$time every time, let's assign it to an easy variable
-c1 = data$time
-c2 = data$col2
+ctd$time # this is done using a dollar sign. It tells R to look for 'time' within the 'ctd' data frame. Note that 'time' here is expressed in seconds since the instrument was turned on.
+ctd$temperature # repeat for temperature
 
 # plotting ----------------------------------------------------------------
 
-# now let's try plotting the two variables against each other
-plot(x = c1, y = c2, 
+# plot the entire data frame
+plot(ctd)
+
+# now let's try plotting two variables against each other
+plot(x = ctd$time,
+     y = ctd$temperature, 
+     type = 'l',
      col = 'purple', 
      pch = 16,
      main = 'Title', 
      xlab = 'x axis title', 
      ylab = 'y axis title')
 
-## REPEAT WITH DIFFERENT DATA INPUT FILE ##
+# go ahead and customize! For a sense of the different options, see documentation for the plot function"
+?plot
+
+# the 'par' function, which stands for 'graphical parameters', has a dizzying list of plotting options"
+?par
+
+# we'll get into this in greater detail in subsequent tutorials...
