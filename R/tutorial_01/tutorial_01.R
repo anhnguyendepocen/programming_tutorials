@@ -1,4 +1,5 @@
 ## Tutorial 01: Intro to R ##
+# Follow along at: https://christophrenkl.github.io/programming_tutorials/
 
 # This script is intended to provide an overview of some of the capabilities 
 # of R, with particular emphasis on tools required to succeed in oceanography. 
@@ -70,27 +71,31 @@ rm(list=ls())
 
 # Data types --------------------------------------------------------------
 
-# ADD MORE HERE #
-
 txt = 'hello world' # now the variable 'txt' shows up. 
-# Note that it's a character, not an integer
 
 print(txt) # variable shows up in the console
 
-# make a vector
+# Note that it's a character, not an integer. This is one of many data types. 
+# Here are a few common ones:
+a = 3.112222 # numeric
+b = 'cat' # character
+c = TRUE # logical
+# you can check the data type using the function class()
+class(c)
+
+# These are single value data types, which can be stored or organized in many formats
+# Here, for example, are several 'vectors':
 vec1 = c(1,2,3,4,5,6,7,8)
 vec2 = c(1,2,NA,4,5,6,7,8)
 vec3 = c('cow','pig','horse','tugboat', 'pumpkin', 
-         'gerbil', 'onion', 'bean')
-# notice the above vector is easily split over multiple lines
+         'gerbil', 'onion', 'bean') # notice this vector is easily split over multiple lines
 
-# select a specfic value from vector (indexing)
-vec1[1]
-vec2[3]
-vec3[4]
-
-# make data frame
+# Several vectors can be combined into a 'data frame', similar to a spreadsheet in excel
+# Here's how to make data frame
 df = data.frame(vec1,vec2,vec3)
+# Notice that a data frame can hold multiple data types. This is very powerful.
+# You can look at it by clicking on the icon next to 'df', or using the View() function
+View(df)
 
 # Introduction to functions -----------------------------------------------
 
