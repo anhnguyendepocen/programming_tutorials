@@ -3,6 +3,22 @@ layout: post
 title:  "Tutorial 01: Intro to R"
 date:   2018-09-12
 categories: R tutorials
+permalink: /R-tutorial-01/
 ---
 
-Please download the source code and data for this tutorial [here](https://github.com/christophrenkl/programming_tutorials/raw/master/R/tutorial_01.zip)
+**Time:** 1530-1630 ADT on Wednesday, September 12th  
+**Location:** Riley room (Room 3652, Life Science Centre, Oceanography Wing)
+
+**Concepts:**
+* Tour of Rstudio  
+* Simple operations (R as a calculator)  
+* Data types  
+* Introduction to functions  
+* Reading in data  
+* Basic plotting  
+
+**Additional Information:**  
+If you are interested, please bring a laptop with [R](https://cran.r-project.org/) and [Rstudio](https://www.rstudio.com/products/rstudio/download/) installed. It would also be helpful if you could send an email to one of us (hansen.johnson@dal.ca or christoph.renkl@dal.ca) so we can get a rough headcount.
+
+**Materials:**  
+Please download the source code and data for this tutorial [here](https://github.com/christophrenkl/programming_tutorials/raw/master/R/tutorial_01.zip).
