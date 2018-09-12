@@ -4,7 +4,7 @@
 
 This introduction to programming with R and Python targeted to senior undergraduate and first year graduate students.
 
-Click [here](https://christophrenkl.github.io/programming_intro) for more information.
+Click [here](https://christophrenkl.github.io/programming_tutorials) for more information.
 
 ## Tutorials
 
