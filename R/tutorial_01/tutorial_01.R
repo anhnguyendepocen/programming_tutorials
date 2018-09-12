@@ -2,7 +2,8 @@
 
 # This script is intended to provide an overview of some of the capabilities 
 # of R, with particular emphasis on tools required to succeed in oceanography. 
-# It's a working document, so please note or excuse any mistakes.
+# It's a working document, so please note or excuse any mistakes. Better yet, 
+# file an issue to report them via to hansen.johnson@dal.ca 
 
 # R is a programming language. As such it is beautifully, and sometimes 
 # painfully logical. Be prepared to make mistakes and be frustrated, but we 
@@ -16,12 +17,12 @@
 
 # Here are a few of the very basics:
 # 1. This tutorial assumes you are using Rstudio in the default set up.
-# Rstudio is not the same as R. R is the actual programming language, while
-# Rstudio refers to a common, and very powerful interface for people to 
-# use R.
+#   Rstudio is not the same as R. R is the actual programming language, while
+#   Rstudio refers to a common, and very powerful interface for people to 
+#   use R.
 # 2. All the text you are reading is called the 'script'. This is just 
-# a text file (saved as .R) that contains the code that will be read 
-# and compiled R
+#   a text file (saved as .R) that contains the code that will be read 
+#   and compiled R
 # 3. Below is the console.
 # 4. Top right is your global environment
 # 5. Bottom right are tabs for help, plotting, package manager, etc
@@ -150,14 +151,14 @@ str(ctd)
 summary(ctd)
 
 # let's look at only time. This is done using a dollar sign. It tells R to look for 'time' 
-# within the 'ctd' data frame. Note that 'time' here is expressed in seconds since the instrument 
-# was turned on.
+# within the 'ctd' data frame. Note that 'time' here is expressed in seconds since the 
+# instrument was turned on.
 ctd$time 
 
 # repeat for temperature
 ctd$temperature 
 
-# plotting ----------------------------------------------------------------
+# Plotting ----------------------------------------------------------------
 
 # plot the entire data frame
 plot(ctd)
@@ -172,10 +173,15 @@ plot(x = ctd$time,
      xlab = 'x axis title', 
      ylab = 'y axis title')
 
-# go ahead and customize! For a sense of the different options, see documentation for the plot function"
-?plot
+# Getting help ------------------------------------------------------------
 
-# the 'par' function, which stands for 'graphical parameters', has a dizzying list of plotting options"
-?par
+# The following are very common places where help can be found:
+# 1. Other students (!!!)
+# 2. Stack overflow (or other code forum)
+# 3. GitHub (or related code repository)
+# 4. Rstudio website
+# 5. Personal blogs
+# 6. Open-source courses (Coursera, etc)
 
-# we'll get into this in greater detail in subsequent tutorials...
+# Google is your friend. Well-articulated searches will (hopefully) send you to
+# the right place. Good luck, and don't be afraid to ask for help :)
