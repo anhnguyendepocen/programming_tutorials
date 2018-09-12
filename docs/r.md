@@ -4,7 +4,7 @@ title: R Tutorials
 permalink: /r/
 ---
 
-### [01: Intro to R](/programming_tutorials/R-tutorial-01/)
+### [01: Intro to R](/programming_tutorials/r-tutorial-01/)
 
 * Tour of Rstudio  
 * Simple operations (R as a calculator)  
