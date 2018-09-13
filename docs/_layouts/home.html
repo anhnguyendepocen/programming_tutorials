@@ -1,0 +1,48 @@
+---
+layout: default
+---
+
+<div class="home">
+  {%- if page.title -%}
+    <h1 class="page-heading">{{ page.title }}</h1>
+  {%- endif -%}
+
+<h2 class="post-list-heading">Summary</h2>
+
+  <p>
+    Computer programming is an important research tool, but is seldom taught
+    and can be very intimidating to learn. We are leading a weekly informal
+    lecture series to introduce the basic concepts of programming in R and
+    Python languages. It's targeted at senior undergraduate and first year
+    graduate students in Oceanography or related discipline at
+    Dalhousie University, but we intend to make all content openly available
+    for broader use. We hope you find this helpful, and encourage you to get
+    in touch if you have any questions, comments, or suggestions.
+  </p>
+
+
+  {{ content }}
+
+  {%- if site.posts.size > 0 -%}
+    <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
+    <ul class="post-list">
+      {%- for post in site.posts -%}
+      <li>
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        <span class="post-meta">{{ post.date | date: date_format }}</span>
+        <h3>
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+        </h3>
+        {%- if site.show_excerpts -%}
+          {{ post.excerpt }}
+        {%- endif -%}
+      </li>
+      {%- endfor -%}
+    </ul>
+
+    <!-- <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p> -->
+  {%- endif -%}
+
+</div>
