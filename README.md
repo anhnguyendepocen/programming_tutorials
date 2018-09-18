@@ -31,25 +31,22 @@ Click [here](https://christophrenkl.github.io/programming_tutorials) for more in
 #### 03: Reporting with Rmarkdown
 
 * Overview of Rmarkdown  
-* Rmarkdown in Rstudio  
-* Code chunks versus text  
+* Writing Rmarkdown reports in Rstudio  
 * Rendering html, pdf, and word documents  
-* Examples  
 
 #### 04: Loops, conditions, and custom functions
 
-* Introduction to for loops  
-* Introduction to if and ifelse statements
-* Writing and calling custom functions
-* Bringing it all together  
+* Introduction to logical statements (e.g., _if_,_else_,etc.)
+* Introduction to _for_ loops  
+* Writing and calling custom functions  
 
-#### 05: Project structure
+#### 05: Project organization
 
-* Basic philsophy and rules of thumb  
-* Using readme files  
-* Sacred data directory  
-* Organizing output, code, and reports  
-* Examples and demonstrations  
+* Best practices  
+  * File organization  
+  * Documentation  
+  * Workflow  
+* Version control with Git (and GitHub)
 
 ### Python
 
