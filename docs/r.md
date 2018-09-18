@@ -13,7 +13,7 @@ permalink: /r/
 * Reading in data  
 * Basic plotting  
 
-### 02: Basic data wrangling
+### [02: Basic data wrangling](/programming_tutorials/r-tutorial-02/)
 
 * Packages  
 * Subsetting and indexing
