@@ -80,6 +80,7 @@ print(txt) # variable shows up in the console
 a = 3.112222 # numeric
 b = 'cat' # character
 c = TRUE # logical
+
 # you can check the data type using the function class()
 class(c)
 
@@ -88,7 +89,7 @@ class(c)
 vec1 = c(1,2,3,4,5,6,7,8)
 vec2 = c(1,2,NA,4,5,6,7,8)
 vec3 = c('cow','pig','horse','tugboat', 'pumpkin', 
-         'gerbil', 'onion', 'bean') # notice this vector is easily split over multiple lines
+  'gerbil', 'onion', 'bean') # notice this vector is easily split over multiple lines
 
 # Several vectors can be combined into a 'data frame', similar to a spreadsheet in excel
 # Here's how to make data frame
@@ -111,6 +112,9 @@ sd(vec1)
 # mean of a vector with a nan
 mean(vec2)
 mean(vec2, na.rm = TRUE)
+mean(na.rm = TRUE, x = vec2)
+mean(vec2,0,TRUE)
+mean()
 
 # mean of non-numeric vector
 mean(vec3)
@@ -141,7 +145,7 @@ getwd()
 # appropriate place on your machine, then clicking 'More' and 
 # 'Set as Working Directory'. Also, be sure to take advantage of tab
 # autocomplete in Rstudio!
-setwd("~/Projects/programming_tutorials/R/tutorial_01/") 
+setwd() 
 
 # read in the .csv file for the tutorial assignment
 ctd = read.csv("data/ctd.csv") 
