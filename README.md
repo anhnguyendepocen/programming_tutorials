@@ -21,12 +21,12 @@ Click [here](https://christophrenkl.github.io/programming_tutorials) for more in
 
 #### 02: Basic data wrangling
 
-* Packages  
+* Data exploration and formatting
 * Subsetting and indexing
+* Packages  
 * Working with date/time
-* Basic statistics  
-* Custom plotting  
-* Saving plots, r data files, etc.
+* Customizing and saving plots  
+* R data files
 
 #### 03: Reporting with Rmarkdown
 

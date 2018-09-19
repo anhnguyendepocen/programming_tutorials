@@ -15,12 +15,12 @@ permalink: /r/
 
 ### [02: Basic data wrangling](/programming_tutorials/r-tutorial-02/)
 
-* Packages  
+* Data exploration and formatting
 * Subsetting and indexing
+* Packages  
 * Working with date/time
-* Basic statistics  
-* Custom plotting  
-* Saving plots, r data files, etc.
+* Customizing and saving plots  
+* R data files
 
 #### 03: Reporting with Rmarkdown
 
