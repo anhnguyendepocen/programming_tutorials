@@ -286,7 +286,7 @@ The \texttt{enumerate}-environment is used to make a list with bullet points. Yo
 
 \section{Tables}
 
-Use the \texttt{tabular}-environment to make tables. The \texttt{table}-environment makes your table a floating object which \LaTeX\ will place in the document where it wants, by adding a label you can refer to the table, e.g.~Table~\ref{tab:example_table}.
+Use the \texttt{tabular}-environment to make tables. The \texttt{table}-environment makes your table a floating object which \LaTeX\ will place in the document where it wants, by adding a label you can refer to the table, e.g., Table \ref{tab:example_table}.
 
 \begin{table}[h]
   \centering 
@@ -324,11 +324,11 @@ You can align multiple equations with the \texttt{align}-environment.
   b         &= \sqrt{c^2 - a^2} \label{eq:pythagorean}
 \end{align}
 
-You can add a lable at the end of an equation you want to refer to. Equation~\eqref{eq:pythagorean} is the famous Pythagorean theorem.
+You can add a lable at the end of an equation you want to refer to. Equation \eqref{eq:pythagorean} is the famous Pythagorean theorem.
 
 \section{Figures}
 
-This section describes how a graphic like Figure~\ref{fig:ocean} can be included in the document. Figures are treated as floating object, so \LaTeX\ will place them wherever it thinks it fits best.
+This section describes how a graphic like Figure \ref{fig:ocean} can be included in the document. Figures are treated as floating object, so \LaTeX\ will place them wherever it thinks it fits best.
 
 \begin{figure}[h]
   \centering
