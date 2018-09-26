@@ -22,7 +22,7 @@ permalink: /r/
 * Customizing and saving plots  
 * R data files
 
-#### 03: Reporting with Rmarkdown
+#### [03: Reporting with Rmarkdown](/programming_tutorials/r-tutorial-03/)
 
 * Overview of Rmarkdown  
 * Writing Rmarkdown reports in Rstudio  
