@@ -1,4 +1,4 @@
-#### 03: Basic data wrangling
+#### 03: Reporting with RMarkdown
 
 ## Concepts covered:
 
