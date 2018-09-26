@@ -1,0 +1,338 @@
+---
+title: 'Tutorial 03: Rmarkdown'
+author: "Hansen Johnson"
+date: "September 26, 2018"
+output: html_document
+---
+
+# Introduction
+
+Welcome to Rmarkdown! At first glance it may look similar to the R scripts we've worked on before, but it's more than that. Rmarkdown provides an elegant tool to combine text, code, and output all together in the same, beautifully formatted document. Hopefully this tutorial clearly conveys the basic use of Rmarkdown, and demonstrates how it might be a useful tool to add to your arsenal.
+
+## Installation
+
+The first step is to make sure you have the rmarkdown package installed successfully. Follow the steps in `src/installation.R` to install the appropriate packages.
+
+## Basic workflow 
+
+### Setting up the workspace
+
+I like to set up my Rstudio environment such that I can display my code and output side-by-side. One nice way to do that is by clicking on the small gear icon next to the 'Knit' button at the top of this page, and selecting the option 'Preview in Viewer Pane'.  
+
+### Knitting
+
+The term 'Knit' in this context basically means 'build document'. It's called 'Knit' because that command triggers a package called `knitR` to covert R code (and output) to plain markdown snippets and stitch them together, then calls another library (`pandoc`) to convert the markdown into whatever output you choose.
+
+Go ahead and click 'Knit', and you should (hopefully) see some nice-looking text appear in the Viewer pane.
+
+>**Hint**: Use the keyboard shortcut 'command+shift+k' (on a mac) to Knit
+
+It's nice to expand the Viewer pane and minimize the consolve (using the buttons at the top-right corners of each) to fully view code and output side-by-side.
+
+# Basic Markdown Syntax
+
+Markdown is a simple typesetting language. In practice, that means you can write a bunch of text and format it with specific commands. We already learned how to use the hashtag to designate a section header. Here are a few of the other other basics:
+
+<!-- Comment -->
+
+Plain text  
+
+End a line with two spaces to start a new paragraph  
+
+*italics* and _italics_  
+
+**bold** and __bold__
+
+superscript^2^  
+
+~~strikethrough~~
+
+[link to nice reference guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+
+## Header 2
+### Header 3
+#### Header 4
+##### Header 5
+###### Header 6
+
+inline equation: $A = \pi*r^{2}$ (use LaTeX-style conventions)  
+
+image:  
+![](img/ocean.jpg)
+
+horizontal rule (or slide break):  
+
+***
+
+* unordered list
+    + sub-item 1
+    + sub-item 2
+* item 2
+
+1. ordered list
+    + sub-item 1  
+    + sub-item 2 
+2. item 2
+
+Simple table:
+
+COL1 | COL2 | COL3
+-----|------|-----
+C1   | C2   | C6
+C3   | C4   | C7
+
+`Unformatted text`
+
+Unformatted text chunk:
+```
+Here is some unformatted text :)
+```
+
+>Block quote
+
+# Code chunks
+
+Next we'll go through a short exercise to demonstrate how to use code within Rmarkdown. We'll use the dataset from [tutorial 02](https://christophrenkl.github.io/programming_tutorials/r-tutorial-02/). 
+
+The **goal** of the exercise will be to calculate the descent rate of an ocean glider on a _single_ downcast.
+
+In order to do that, we'll need to use the following steps:
+
+1. Read in the data and select a single profile
+2. Run a linear regression and extract coefficients (slope)
+3. Plot the results
+4. Print the results directly in the document text
+
+## Step 1: Read and subset data
+
+Let's make a code chunk to read in some data. The inputs within the brackets tell Rmarkdown what to do with this chunk. First, you need `r` to designate this as R code. In this case, `setup` is the name of the chunk. The `echo=TRUE` argument means that the chunk should be included in the final document, and the `results='asis'` means that the output of the code should be included in the final document as well. Possible inputs for the `results` argument are `'asis'`, `'hide'`, `'markup'`, and `'hold'`.
+
+```{r setup, echo=TRUE, results='hide'}
+# read in data (results from tutorial 02)
+load(file = 'data/glider.rda')
+
+# show a few possible profile IDs to choose from
+df$profile_id[500:515]
+
+# select profile ID
+pid = 1534385866
+
+# select downcast from a single profile
+dcast = subset(df, profile_id == pid)
+```
+
+> **Hint**: You can run the code chunk line-by-line, like in normal R, but you can also run the full chunk using command+shift+s (on mac)
+
+## Step 2: Linear regression
+Next let's do a quick linear regression. Notice that for this chunk the `results` argument has changed to `'asis'` so that the code output (i.e., the stuff that shows up in the R console) will be included in the final document. This will split the code into chunks around the output.
+
+```{r stats, echo=TRUE, results='asis'}
+# create depth vector
+depth = dcast$depth
+
+# create time vector (convert time to seconds since start)
+time = as.numeric(dcast$time)-as.numeric(dcast$time[1])
+
+# run linear regression using lm(y ~ x)
+dwn = lm(depth ~ time)
+
+# print coefficients (only if results!='hide')
+dwn
+
+# extract slope (descent rate)
+dr = dwn$coefficients[2]
+```
+
+## Step 3: Plot
+
+Now we'll plot the results. This time I do not want to show the plotting code, so I'll use the `echo=FALSE` argument in the code chunk.
+
+```{r plot, echo=FALSE, results='asis'}
+
+# plot that downcast
+plot(time, depth, 
+     ylim = c(rev(range(depth))),
+     ylab = 'Depth [m]', 
+     xlab = 'Time [s]')
+
+# add regression line
+abline(dwn)
+
+# add grid
+grid()
+
+# make a character string with the descent rate
+txt = paste0('Descent rate: ', round(dr, 2), ' m/s')
+
+# add text to plot margin
+mtext(text = txt, side = 3, line = 0, adj = 0)
+
+# add title
+title(paste0('Profile: ', pid))
+
+```
+
+## Step 4: Inline code
+
+The glider descent rate for profile `r as.character(pid)` was `r round(dr, 2)` meters per second. It descended to a maximum depth of `r round(max(depth), 1)` meters in approximately `r round(max(time)/60)` minutes.
+
+# Output options
+
+One of the most powerful things about Rmarkdown is that you can produce many different types of output formats from the same Rmarkdown document. 
+
+## Available formats
+
+Here is the complete list of all the different formats you can 'knit to':
+
+* html_document (default)
+* pdf_document
+* word_document
+* slidy_presentation
+* ioslides_presentation
+* latex_document
+* beamer_presentation
+* github_document
+* md_document
+* odt_document
+* powerpoint_presentation
+* rtf_document
+
+Note that several of these require additional software and/or configuration to work correctly.
+
+## YAML Header
+
+You can specify output format, and a variety of other metadata or processing arguments, in the text at the top of the file. This is called the YAML header. For more details about how to use it to its fullest, go [here](https://bookdown.org/yihui/rmarkdown/html-document.html)
+
+```
+---
+title: "Rmarkdown Tutorial"
+author: "Hansen Johnson"
+date: "September 26, 2018"
+output: html_document
+---
+```
+
+# Additional resources
+
+There are a huge number of awesome resources online for Rmarkdown. I few I can highly recommend are:
+
+* [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+* [R Markdown Cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+* [R Markdown Reference Guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+* [Rstuido's Rmarkdown website](https://rmarkdown.rstudio.com/index.html)
+
+# BONUS: Writing in HTML and LaTeX
+
+One really cool thing about Rmarkdown is that you can write directly in HTML or LaTeX if you are working with HTML or PDF documents, respectively. This is really nice for re-using existing work and/or customizing the output beyond what simple markdown is capable of.
+
+>**Note:** HTML will only work with HTML output, and LaTeX only with PDF output!
+
+## HTML [HTML output only]
+
+You can insert raw html directly into your Rmarkdown document, just as if you were building a website!
+
+<h3>This is a heading (level 3)</h3>
+<p>This is a paragraph.</p>
+<a href="https://www.w3schools.com">This is a link</a>
+
+This is a list:
+<ul>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+
+<p style="color:Tomato;">Here's some coloured text</p>
+
+<img src="img/ocean.jpg" alt="Ocean image from https://en.wikipedia.org/wiki/Ocean">
+
+## Latex [PDF output only]
+
+This section gives an overview about the basics of \LaTeX. It's taken directly from Christoph's article template.
+
+\subsection{Font styles}
+
+You can write your text in \textbf{boldface}, \textit{italicized}, \textsl{slanted}, \textsc{small caps}, or in \texttt{typewriter style}.
+
+\subsection{Lists}
+
+There are two different kinds of lists which will be introduces in the following sub-sub-sections
+
+\subsubsection{List with bullets}
+
+The \texttt{itemize}-environment is used to make a list with bullet points. You can nest another \texttt{itemize}-environment in an existing one to get sub-bullets.
+
+\begin{itemize}
+  \item first bullet point
+  \item second bullet point
+  \begin{itemize}
+    \item a nested bullet point
+  \end{itemize}
+  \item third bullet point
+\end{itemize}
+
+\subsubsection{List with numbers}
+
+The \texttt{enumerate}-environment is used to make a list with bullet points. You can nest another \texttt{enumerate}-environment in an existing one to get sub-entries.
+
+\begin{enumerate}
+  \item first entry
+  \item second entry
+  \begin{enumerate}
+    \item a nested entry
+  \end{enumerate}
+  \item third entry
+\end{enumerate}
+
+\section{Tables}
+
+Use the \texttt{tabular}-environment to make tables. The \texttt{table}-environment makes your table a floating object which \LaTeX\ will place in the document where it wants, by adding a label you can refer to the table, e.g.~Table~\ref{tab:example_table}.
+
+\begin{table}[h]
+  \centering 
+  \caption{Caption above table.}
+  \begin{tabular}{lcr} 
+    \hline             
+    First Column & Second Column & Third Column \\ 
+    \hline
+    L1C1         & L1C2          & L1C3         \\ 
+    L2C1         & L2C2          & L2C3         \\
+    L3C1         & L3C2          & L3C3         \\
+    \hline  
+  \end{tabular}
+  \label{tab:example_table}
+                            
+\end{table}
+
+\section{Equations}
+
+A few examples of how to write equations.
+
+\subsection{A simple equation}
+
+Euler's identity is
+
+\begin{equation*}
+  e^{i\theta} = \cos( \theta ) + i \sin{ \theta }
+\end{equation*}
+
+\subsection{Multiple aligned equations}
+You can align multiple equations with the \texttt{align}-environment.
+
+\begin{align}
+  a^2 + b^2 &= c^2 \notag \\
+  b         &= \sqrt{c^2 - a^2} \label{eq:pythagorean}
+\end{align}
+
+You can add a lable at the end of an equation you want to refer to. Equation~\eqref{eq:pythagorean} is the famous Pythagorean theorem.
+
+\section{Figures}
+
+This section describes how a graphic like Figure~\ref{fig:ocean} can be included in the document. Figures are treated as floating object, so \LaTeX\ will place them wherever it thinks it fits best.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\linewidth]{img/ocean}
+  \caption{Ocean image from \url{https://en.wikipedia.org/wiki/Ocean}}
+  \label{fig:ocean}
+\end{figure}
