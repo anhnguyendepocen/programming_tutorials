@@ -22,19 +22,19 @@ permalink: /r/
 * Customizing and saving plots  
 * R data files
 
-#### [03: Reporting with Rmarkdown](/programming_tutorials/r-tutorial-03/)
+### [03: Reporting with Rmarkdown](/programming_tutorials/r-tutorial-03/)
 
 * Overview of Rmarkdown  
 * Writing Rmarkdown reports in Rstudio  
 * Rendering html, pdf, and word documents  
 
-#### 04: Loops, conditions, and custom functions
+### 04: Loops, conditions, and custom functions
 
 * Introduction to logical statements (e.g., _if_,_else_,etc.)
 * Introduction to _for_ loops  
 * Writing and calling custom functions  
 
-#### 05: Project organization
+### 05: Project organization
 
 * Best practices  
   * File organization  
