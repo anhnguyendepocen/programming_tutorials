@@ -142,13 +142,17 @@ if(val %in% vec){
 
 # Basic for loop ----------------------------------------------------------
 
-# The most important thing about a For Loop is the sequence
+# A FOR LOOP is a way to iteratively loop through a section of code and make a
+# slight change each time. This works by assigning a variable, usually called
+# 'i', whose value changes with each iteration of the loop. You must supply a
+# vector of values that 'i' will loop through and be assigned to. Usually this
+# is a simple sequence. Here are a few examples of how they might be defined.
 
 7:47 # Linear sequence from 7 to 47
 1:length(vec) # Linear sequence from 1 to the length of vec
 seq(from = 21, to = 2014, by = 450) # Sequence from 21 to 2014 by 450
 seq(from = 21, by = 450, length.out = 14) # Sequence of 14 values from 21 by 450
-seq_along(vec)
+seq_along(vec) # this is a convenient function for doing the same thing as 1:15
 
 for(i in seq_along(vec)){
   
@@ -160,8 +164,12 @@ for(i in seq_along(vec)){
   
 }
 
+# Here's an example for how to store output from a loop
 
+# best practice is to initialize a vector that will be populated by a loop
 out = rep(NA, length(vec))
+
+# loop
 for(i in 1:(length(vec-1))){
   
   # define temporary variable
@@ -170,6 +178,12 @@ for(i in 1:(length(vec-1))){
 }
 
 # Basic custom function ---------------------------------------------------
+# Here I'll just show a few examples of how to make custom functions. 
+
+
+# In this syntax, 'in_vector' is the name of the function, and 'myval' and
+# 'myvec' are arguments. The curly brackets denote the beginning and end of the
+# function
 
 # Define the function
 in_vector = function(myval,myvec){
@@ -192,7 +206,7 @@ in_vector = function(myval,myvec){
 in_vector(myval = 503, myvec = vec)
 in_vector(myval = 503, myvec = c(23,42,11111,17))
 
-# Define the same function, but this time set default values
+# Define the same function, but this time set default values using ==
 in_vector2 = function(myval = 17, myvec = vec){
   
   # calculate mean of vector
