@@ -38,10 +38,7 @@ if(!dir.exists(proc_dir)){
 # process -----------------------------------------------------------------
 
 # loop through all deployments and generate simple plots
-for(i in seq_along(data_urls)){
-  
-  # isolate data url
-  data_url = data_urls[i]
+for(data_url in data_urls){
   
   ## extract deployment id from url (e.g., 'otn200_20180918_90_realtime')
   
@@ -58,7 +55,7 @@ for(i in seq_along(data_urls)){
   deployment_id = tmp[[1]][1]
   
   # define saved data file name
-  ofile = paste0(proc_dir, '/', deployment_id, '.rds')
+  ofile = paste0(proc_dir, '/', deployment_id, '.rda')
   
   if(!file.exists(ofile)){
     
@@ -90,10 +87,7 @@ for(i in seq_along(data_urls)){
   vars = c('temperature', 'salinity', 'density')
   
   # loop through and plot each variable
-  for(j in seq_along(vars)){
-    
-    # isolate var name
-    ivar = vars[j]
+  for(ivar in vars){
     
     # define file name
     fname = paste0(fig_dir, '/', deployment_id, '_', ivar, '.pdf')

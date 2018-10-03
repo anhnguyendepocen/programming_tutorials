@@ -110,7 +110,9 @@ val = 42
 
 # Set up the "if statement". This can be read: "If [val] is within [vec], then send a message"
 if(val %in% vec){
+  
   message(val, ' is in the vector :)')
+  
 }
 # Note the syntax here, or the way this statement is written. The condition is
 # written within the () following if, and the action occurs within {}
@@ -154,13 +156,20 @@ seq(from = 21, to = 2014, by = 450) # Sequence from 21 to 2014 by 450
 seq(from = 21, by = 450, length.out = 14) # Sequence of 14 values from 21 by 450
 seq_along(vec) # this is a convenient function for doing the same thing as 1:15
 
-for(i in seq_along(vec)){
+for(i in 1:length(vec)){
   
   # define temporary variable
   ivec = vec[i]
   
-  # print a message
-  message("The ", i, "th value in the vector is: ", ivec)
+  if(i==1){
+    message("The ", i, "st value in the vector is: ", ivec)  
+  } else if(i == 2){
+    message("The ", i, "nd value in the vector is: ", ivec)  
+  } else if(i == 3){
+    message("The ", i, "rd value in the vector is: ", ivec)  
+  } else {
+    message("The ", i, "th value in the vector is: ", ivec)  
+  }
   
 }
 
@@ -168,9 +177,8 @@ for(i in seq_along(vec)){
 
 # best practice is to initialize a vector that will be populated by a loop
 out = rep(NA, length(vec))
-
 # loop
-for(i in 1:(length(vec-1))){
+for(i in 1:(length(vec)-1)){
   
   # define temporary variable
   out[i] = vec[i]+vec[i+1]
@@ -179,7 +187,6 @@ for(i in 1:(length(vec-1))){
 
 # Basic custom function ---------------------------------------------------
 # Here I'll just show a few examples of how to make custom functions. 
-
 
 # In this syntax, 'in_vector' is the name of the function, and 'myval' and
 # 'myvec' are arguments. The curly brackets denote the beginning and end of the
@@ -204,9 +211,9 @@ in_vector = function(myval,myvec){
 
 # Test it!
 in_vector(myval = 503, myvec = vec)
-in_vector(myval = 503, myvec = c(23,42,11111,17))
+in_vector(myval = 1000000, myvec = c(23,42,11111,17))
 
-# Define the same function, but this time set default values using ==
+# Define the same function, but this time set default values using =
 in_vector2 = function(myval = 17, myvec = vec){
   
   # calculate mean of vector
@@ -225,4 +232,5 @@ in_vector2 = function(myval = 17, myvec = vec){
 
 # Test it!
 in_vector2() # Default values are used when you don't specify inputs
+# in_vector() # Note the error if you try this with the original function
 in_vector2(myval = 32)
