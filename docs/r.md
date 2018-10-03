@@ -28,7 +28,7 @@ permalink: /r/
 * Writing Rmarkdown reports in Rstudio  
 * Rendering html, pdf, and word documents  
 
-### 04: [Loops, conditions, and custom functions]((/programming_tutorials/r-tutorial-04/))
+### [04: Loops, conditions, and custom functions](/programming_tutorials/r-tutorial-04/)
 
 * Introduction to logical statements (e.g., _if_,_else_,etc.)
 * Introduction to _for_ loops  
