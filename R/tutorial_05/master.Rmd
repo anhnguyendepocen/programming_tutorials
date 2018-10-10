@@ -1,6 +1,8 @@
 ---
 title: "A comparison of glider versus satellite-derived SST"
-output: html_document
+author: Hansen Johnson
+date: '2018-10-10'
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
