@@ -108,7 +108,7 @@ subset_sst = function(sat, bb){
   return(out)
 }
 
-plot_sst = function(sat){
+plot_sst = function(sat, colorbar = TRUE){
   # plot a map of an sst object
   
   library(oce)
@@ -131,20 +131,22 @@ plot_sst = function(sat){
     p = "+proj=merc"
   }
   
-  # setup layout for plotting
-  m = rbind(c(1,1,1,1,1,1,1,1,1,1,1,2),
-            c(1,1,1,1,1,1,1,1,1,1,1,2),
-            c(1,1,1,1,1,1,1,1,1,1,1,2),
-            c(1,1,1,1,1,1,1,1,1,1,1,2),
-            c(1,1,1,1,1,1,1,1,1,1,1,2),
-            c(1,1,1,1,1,1,1,1,1,1,1,2))
-  
-  layout(m)
-  
-  # configure colour scale for plotting
-  pal = oce.colorsTemperature()
-  zlim = range(sst, na.rm = TRUE)
-  c = colormap(sst, breaks=100, zclip = T, col = pal, zlim = zlim)
+  if(colorbar){
+    # setup layout for plotting
+    m = rbind(c(1,1,1,1,1,1,1,1,1,1,1,2),
+              c(1,1,1,1,1,1,1,1,1,1,1,2),
+              c(1,1,1,1,1,1,1,1,1,1,1,2),
+              c(1,1,1,1,1,1,1,1,1,1,1,2),
+              c(1,1,1,1,1,1,1,1,1,1,1,2),
+              c(1,1,1,1,1,1,1,1,1,1,1,2))
+    
+    layout(m)
+    
+    # configure colour scale for plotting
+    pal = oce.colorsTemperature()
+    zlim = range(sst, na.rm = TRUE)
+    c = colormap(sst, breaks=100, zclip = T, col = pal, zlim = zlim)
+  }
   
   # define unit label
   lab = 'Optimum Interpolation SST [deg C]'
@@ -166,8 +168,10 @@ plot_sst = function(sat){
   # add title
   title(paste0(time))
   
-  # add colour palette
-  drawPalette(c$zlim, col=c$col, breaks=c$breaks, zlab = '', fullpage = T)
+  if(colorbar){
+    # add colour palette
+    drawPalette(c$zlim, col=c$col, breaks=c$breaks, zlab = '', fullpage = T)
+  }
 }
 
 extract_sst = function(mlat, mlon, sat){

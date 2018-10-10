@@ -1,7 +1,6 @@
 ---
 title: "A comparison of glider versus satellite-derived SST"
-output: 
-  html_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -9,7 +8,7 @@ output:
 # document. In other words, writing 'echo=TRUE' in the function below is the
 # same as writing 'echo=TRUE' between the curly brackets at the begining of each
 # chunk
-knitr::opts_chunk$set(echo = TRUE, results = "hide")
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
 ## Background
@@ -95,18 +94,21 @@ The satellite data I'm using aren't strictly satellite data. It's actually a pro
 The first step is to download the data. I can't resist the opportunity to make a pretty plot, so we might as well plot the full dataset too. Let's begin with an arbitrary date, say the first day of the glider deployment.
 
 ```{r}
+# test date
+td = unique(glider$date)[2]
+
 # read in satellite data
-fullsat = get_sst_data(date = glider$date[1], data_dir = data_dir, proc_dir = proc_dir)
+fullsat = get_sst_data(date = td, data_dir = data_dir, proc_dir = proc_dir)
 
 # plot full dataset
 plot_sst(fullsat)
 ```
 
-Awesome! Now let's extract plot a subset of this data centered around our glider.
+Beautiful! Now let's extract plot a subset of this data centered around our glider.
 
 ```{r}
 # find bounding box around glider
-bb = calc_bb(glider$lat, glider$lon, lon_buffer = 4, lat_buffer = 2)
+bb = calc_bb(glider$lat, glider$lon, lon_buffer = 2, lat_buffer = 1)
 
 # subset satellite
 sat = subset_sst(sat = fullsat, bb = bb)
@@ -115,7 +117,22 @@ sat = subset_sst(sat = fullsat, bb = bb)
 plot_sst(sat)
 ```
 
-That's it! Now we've got both datasets in-hand, so we can move on to extracting and comparing the SST data.
+### Glider and Satellite
+
+It would be nice to see what the glider track looks like relative to a single grid cell. Let's plot the glider track on the satellite overlay for our day of interest.
+
+```{r}
+# plot subset sat
+plot_sst(sat, colorbar = FALSE)
+
+# add glider tracks
+mapLines(glider$lon, glider$lat, col = 'lightgrey', lwd = 2)
+
+# add tracks for day of interest
+with(subset(glider, date == td),
+     mapLines(lon, lat, col = 'blue', lwd = 2)
+)
+```
 
 ## Processing 
 
@@ -124,7 +141,6 @@ That's it! Now we've got both datasets in-hand, so we can move on to extracting 
 Pulling the glider SST is relatively simple. I'll do that by just subsetting the data to only take observations above a given depth threshold (2 meters by default).
 
 ```{r}
-
 # set depth threshold
 z_min = 2
 
@@ -133,9 +149,6 @@ glider_sst = subset(glider, depth < z_min)
 
 # simple time series
 plot(glider_sst$date, glider_sst$temperature, xlab = '', ylab = 'Temperature [deg C]')
-
-# moving average
-
 ```
 
 ### Satellite SST (near glider)
@@ -143,8 +156,25 @@ plot(glider_sst$date, glider_sst$temperature, xlab = '', ylab = 'Temperature [de
 Perhaps the trickiest step is to extract the satellite SST for the glider's position on a given day. This is achieved by looping through a sequence of days, determining the average glider position, then extracting the satellite SST from the nearest grid cell.
 
 ```{r}
+# glider start date
+d0 = min(glider$date)
+
+# glider end date
+d1 = max(glider$date)
+
+# adjust end date for satellite data delay
+if(Sys.Date()-d1 < 3){
+  message('Omitting glider data from the last 3 days to account for satellite latency')
+  
+  # redefine end date
+  d1 = Sys.Date()-3
+  
+  # subset glider
+  glider_sst = subset(glider_sst, date <= d1)
+}
+
 # make sequence of dates
-dseq = seq(from = min(glider$date), to = max(glider$date), by = 1)
+dseq = seq(from = d0, to = d1, by = 1)
 
 # determine satellite temps on each day
 SAT = list()
@@ -174,25 +204,70 @@ plot(sat_sst$date, sat_sst$temperature, col = 'blue',  xlab = '', ylab = 'SSTOI 
 
 ## Results
 
+### Time series
+
 Now that we have both datasets, we can compare them any number of ways. I'll start with a simple time series and correlation.
 
 ```{r}
-# simple time series
-plot(glider_sst$date, glider_sst$temperature, xlab = '', ylab = 'SST [deg C]')
-points(sat_sst$date, sat_sst$temperature, col = 'blue')
+# calculate daily means
+glider_dmeans = aggregate(temperature ~ date, data = glider_sst, FUN = mean)
 
-glider_daily_means = aggregate(temperature ~ date, data = glider_sst, FUN = mean)
+# plot all glider data
+plot(glider_sst$date, glider_sst$temperature, 
+     xlab = '', ylab = 'SST [deg C]', cex = 1, col = 'grey', pch = 1)
 
+# add daily means
+points(glider_dmeans$date, glider_dmeans$temperature, 
+       col = 'darkslategrey', pch = 16)
+lines(glider_dmeans$date, glider_dmeans$temperature, 
+       col = 'darkslategrey')
 
-plot(glider_daily_means$date, glider_daily_means$temperature, 
-     xlab = '', ylab = 'SST [deg C]')
-points(sat_sst$date, sat_sst$temperature, col = 'blue')
+# add satellite
+points(sat_sst$date, sat_sst$temperature, 
+       col = 'blue', pch = 16)
+lines(sat_sst$date, sat_sst$temperature, 
+       col = 'blue')
 
+# add legend
+legend('topright', cex = 0.8,
+       pch = c(1,16,16), 
+       lty = c(NA, 1, 1),
+       col = c('grey', 'black', 'blue'), 
+       legend = c('Glider observations', 'Glider daily means', 'Satellite daily mean')
+)
+```
+
+### Correlation
+
+```{r}
+# build data frame
+df = data.frame(glider = glider_dmeans$temperature, sat = sat_sst$temperature)
+
+# plot
+plot(df$glider, df$sat, type = 'p', xlab = 'Glider SST [deg C]', ylab = 'Satellite SST [deg C]')
+grid()
+
+# correlation
+r_cor = cor(x = df$glider, y = df$sat)
+
+# make text string
+txt = paste0('Correlation coefficient (r) = ', round(r_cor, 2))
+
+# add to plot
+mtext(text = txt, side = 3, line = 0, adj = 0, cex = 0.8)
+```
+
+### Bias
+
+```{r}
 # calculate bias
-sst_diff = sat_sst$temperature - glider_daily_means$temperature
+sst_diff = sat_sst$temperature - glider_dmeans$temperature
 
 # plot bias
-plot(dseq, sst_diff)
-abline(h = 0)
-length(sst_diff)
+plot(dseq, sst_diff, xlab = '', ylab = 'Difference [sat-glider]')
+abline(h = 0, col = 'grey')
 ```
+
+## Conclusions
+
+There seems to be fantastic agreement between the glider and satellite observations of sea surface temperature (r = `r round(r_cor,2)`), and no evidence of systematic bias in the satellite. The performance of the SSTOI system, at least under these limited circumstances, is impressive. These results frankly surprised me, and, as any good science, have raised more questions than answers. This code could be easily manipulated to conduct this comparison for other glider deployments, or even all deployments. It could also be amended to work with other platforms in other parts of the world. The SSTOI dataset is especially alluring because it includes global coverage all the way back to 1981. The possibilities are endless! Happy coding :)
