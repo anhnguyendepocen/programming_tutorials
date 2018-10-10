@@ -10,4 +10,4 @@ MAINDIR='/Users/hansenjohnson/Projects/programming_tutorials/R'
 cd $MAINDIR
 
 # Zip tutorial, recursively excluding all hidden files (loop later)
-zip -r tutorial_04.zip tutorial_04/ -x "*/\.*"
+zip -r tutorial_05.zip tutorial_05/ -x "*/\.*"
