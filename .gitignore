@@ -3,6 +3,8 @@
 .Rhistory
 .RData
 .Ruserdata
+*.rda
+*.rds
 
 # System files
 .DS_Store
@@ -11,3 +13,6 @@
 /private
 /extras
 ./sass
+
+# data files
+*.nc
