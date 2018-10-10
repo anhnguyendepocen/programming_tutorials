@@ -34,8 +34,9 @@ permalink: /r/
 * Introduction to _for_ loops  
 * Writing and calling custom functions  
 
-### 05: Project organization
+### [05: Project organization](/programming_tutorials/r-tutorial-05/)
 
+* Example project  
 * Best practices  
   * File organization  
   * Documentation  
