@@ -2,7 +2,7 @@
 title: "A comparison of glider versus satellite-derived SST"
 author: Hansen Johnson
 date: '2018-10-10'
-output: pdf_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -91,7 +91,7 @@ mtext(text = txt, side = 3, line = 0, adj = 0, cex = 0.8)
 
 ### Satellite
 
-The satellite data I'm using aren't strictly satellite data. It's actually a product from NOAA called the 'Sea surface temperature optimum interpolation' (SSTOI) dataset, which is a compilation of satellite and other remote-sensed data. It's updated daily and has global coverage with 1/4 degree resolution. Most importantly, it's freely available to download! You can learn more [at the NOAA website](). 
+The satellite data I'm using aren't strictly satellite data. It's actually a product from NOAA called the 'Sea surface temperature optimum interpolation' (OISST) dataset, which is a compilation of satellite and other remote-sensed data. It's updated daily and has global coverage with 1/4 degree resolution. Most importantly, it's freely available to download! You can learn more [at the NOAA website](). 
 
 The first step is to download the data. I can't resist the opportunity to make a pretty plot, so we might as well plot the full dataset too. Let's begin with an arbitrary date, say the first day of the glider deployment.
 
@@ -264,12 +264,19 @@ mtext(text = txt, side = 3, line = 0, adj = 0, cex = 0.8)
 ```{r}
 # calculate bias
 sst_diff = sat_sst$temperature - glider_dmeans$temperature
+bias = mean(sst_diff)
 
 # plot bias
 plot(dseq, sst_diff, xlab = '', ylab = 'Difference [sat-glider]')
 abline(h = 0, col = 'grey')
+
+# make text string
+txt = paste0('Bias (b) = ', round(bias, 2), ' deg C')
+
+# add to plot
+mtext(text = txt, side = 3, line = 0, adj = 0, cex = 0.8)
 ```
 
 ## Conclusions
 
-There seems to be fantastic agreement between the glider and satellite observations of sea surface temperature (r = `r round(r_cor,2)`), and no evidence of systematic bias in the satellite. The performance of the SSTOI system, at least under these limited circumstances, is impressive. These results frankly surprised me, and, as any good science, have raised more questions than answers. This code could be easily manipulated to conduct this comparison for other glider deployments, or even all deployments. It could also be amended to work with other platforms in other parts of the world. The SSTOI dataset is especially alluring because it includes global coverage all the way back to 1981. The possibilities are endless! Happy coding :)
+There seems to be fantastic agreement between the glider and satellite observations of sea surface temperature (r = `r round(r_cor,2)`), and no evidence of systematic bias in the satellite. The performance of the OISST system, at least under these limited circumstances, is impressive. These results frankly surprised me, and, as any good science, have raised more questions than answers. This code could be easily manipulated to conduct this comparison for other glider deployments, or even all deployments. It could also be amended to work with other platforms in other parts of the world. The OISST dataset is especially alluring because it includes global coverage all the way back to 1981. The possibilities are endless! Happy coding :)
