@@ -1,0 +1,198 @@
+---
+title: "A comparison of glider versus satellite-derived SST"
+output: 
+  html_document
+---
+
+```{r setup, include=FALSE}
+# This chunk is used to set default options for all the chunks in the entire
+# document. In other words, writing 'echo=TRUE' in the function below is the
+# same as writing 'echo=TRUE' between the curly brackets at the begining of each
+# chunk
+knitr::opts_chunk$set(echo = TRUE, results = "hide")
+```
+
+## Background
+
+I thought I would take this opportunity to try something I've always wanted to do, which I hope will demonstrate important concepts in BOTH programming *and* oceanography. The **goal** for today will be to compare sea surface temperature (SST) derived from a glider versus a satellite data product from NOAA. This will require a coordinated, thoughtful coding workflow, and (hopefully) shed some light on different types of ocean data.
+
+```{r}
+
+# libraries
+library(oce)
+library(ncdf4)
+library(ocedata)
+data("coastlineWorldFine")
+
+# read in functions
+source('src/sst_functions.R')
+source('src/glider_functions.R')
+
+# define project directory structure
+data_dir = 'data/raw/' # raw data
+proc_dir = 'data/processed/' # processed data
+
+```
+
+## Datasets
+
+### Glider
+
+Slocum gliders swim up and down through the water column for weeks to months at a time collecting ocean data. The Ocean Tracking Network runs a fleet of these units, which they and various partners use for everything from tracking whales to feeding physical data to assimilatory ocean models.
+
+I'm choosing to plot a live mission that's currently (at the time of this writing) deployed to measure right whale habitat in the southern Gulf of St Lawrence. The `id` for that deployment is `Fundy_20180913_89_realtime`, which is the name of the platform (`Fundy`), the start date (`YYYYmmdd`), OTN mission number (`89`), and type of data (`realtime` for ongoing/live missions, `delayed` for archived/completed missions). You can choose any mission you want on their [website](http://ceotr.ocean.dal.ca/gliders/data). 
+
+The first step is to download and process the data, which I achieve with the custom-written `get_glider_data()` function. You can look at the source code for that function, or any other glider tools, in `src/glider_functions.R`.
+
+```{r}
+# define glider deployment id
+deployment_id = 'Fundy_20180913_89_realtime'
+
+# get glider data
+glider = get_glider_data(deployment_id = deployment_id, data_dir = data_dir, proc_dir = proc_dir)
+```
+
+The next step is to visualize the data. I've written functions to plot the CTD data as a simple time series or as a nicely gridded section. The gridded section means that the data are 'normalized' to a grid and smoothed. I'll plot both for comparison. I'll also plot a quick map to get a sense of the glider's spatial coverage.
+
+#### Time series
+
+```{r}
+# plot glider time series
+plot_time_series(glider)
+```
+
+#### Gridded section
+
+```{r}
+# plot temperature section
+plot_section(glider, var = 'temperature')
+```
+
+#### Map
+
+```{r}
+# plot coastline
+plot(coastlineWorldFine, col = 'grey',
+     clon = mean(glider$lon, na.rm = TRUE),
+     clat = mean(glider$lat, na.rm = TRUE), 
+     span = 200, 
+     projection = "+proj=merc")
+
+# add glider lines
+mapLines(glider$lon, glider$lat, col = 'blue')
+
+# make text label
+txt = paste0(min(glider$time), ' to ', max(glider$time))
+
+# add text
+mtext(text = txt, side = 3, line = 0, adj = 0, cex = 0.8)
+```
+
+### Satellite
+
+The satellite data I'm using aren't strictly satellite data. It's actually a product from NOAA called the 'Sea surface temperature optimum interpolation' (SSTOI) dataset, which is a compilation of satellite and other remote-sensed data. It's updated daily and has global coverage with 1/4 degree resolution. Most importantly, it's freely available to download! You can learn more [at the NOAA website](). 
+
+The first step is to download the data. I can't resist the opportunity to make a pretty plot, so we might as well plot the full dataset too. Let's begin with an arbitrary date, say the first day of the glider deployment.
+
+```{r}
+# read in satellite data
+fullsat = get_sst_data(date = glider$date[1], data_dir = data_dir, proc_dir = proc_dir)
+
+# plot full dataset
+plot_sst(fullsat)
+```
+
+Awesome! Now let's extract plot a subset of this data centered around our glider.
+
+```{r}
+# find bounding box around glider
+bb = calc_bb(glider$lat, glider$lon, lon_buffer = 4, lat_buffer = 2)
+
+# subset satellite
+sat = subset_sst(sat = fullsat, bb = bb)
+
+# plot subset sat
+plot_sst(sat)
+```
+
+That's it! Now we've got both datasets in-hand, so we can move on to extracting and comparing the SST data.
+
+## Processing 
+
+### Glider 'SST'
+
+Pulling the glider SST is relatively simple. I'll do that by just subsetting the data to only take observations above a given depth threshold (2 meters by default).
+
+```{r}
+
+# set depth threshold
+z_min = 2
+
+# extract glider sst
+glider_sst = subset(glider, depth < z_min)
+
+# simple time series
+plot(glider_sst$date, glider_sst$temperature, xlab = '', ylab = 'Temperature [deg C]')
+
+# moving average
+
+```
+
+### Satellite SST (near glider)
+
+Perhaps the trickiest step is to extract the satellite SST for the glider's position on a given day. This is achieved by looping through a sequence of days, determining the average glider position, then extracting the satellite SST from the nearest grid cell.
+
+```{r}
+# make sequence of dates
+dseq = seq(from = min(glider$date), to = max(glider$date), by = 1)
+
+# determine satellite temps on each day
+SAT = list()
+for(ii in seq_along(dseq)){
+  
+  # define day
+  iday = dseq[ii]
+  
+  # determine glider position
+  glat = median(glider$lat[as.character(glider$date) == as.character(iday)], na.rm = TRUE)
+  glon = median(glider$lon[as.character(glider$date) == as.character(iday)], na.rm = TRUE)
+  
+  # download sst data
+  isat = get_sst_data(date = iday)
+  
+  # extract sst at glider
+  SAT[[ii]] = extract_sst(mlat = glat, mlon = glon, sat = isat)
+  
+}
+
+# collapse list to a data frame
+sat_sst = do.call(rbind, SAT)
+
+# plot
+plot(sat_sst$date, sat_sst$temperature, col = 'blue',  xlab = '', ylab = 'SSTOI [deg C]')
+```
+
+## Results
+
+Now that we have both datasets, we can compare them any number of ways. I'll start with a simple time series and correlation.
+
+```{r}
+# simple time series
+plot(glider_sst$date, glider_sst$temperature, xlab = '', ylab = 'SST [deg C]')
+points(sat_sst$date, sat_sst$temperature, col = 'blue')
+
+glider_daily_means = aggregate(temperature ~ date, data = glider_sst, FUN = mean)
+
+
+plot(glider_daily_means$date, glider_daily_means$temperature, 
+     xlab = '', ylab = 'SST [deg C]')
+points(sat_sst$date, sat_sst$temperature, col = 'blue')
+
+# calculate bias
+sst_diff = sat_sst$temperature - glider_daily_means$temperature
+
+# plot bias
+plot(dseq, sst_diff)
+abline(h = 0)
+length(sst_diff)
+```
