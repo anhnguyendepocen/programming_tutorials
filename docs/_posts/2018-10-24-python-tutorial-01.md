@@ -20,8 +20,7 @@ permalink: /python-tutorial-01/
 **Additional Information:**  
 If you are planning to attend, please make sure to have the Python 3.7 Anaconda distribution installed. Follow the [installation guide](http://docs.anaconda.com/anaconda/install) according to your operating system.
 
-If you have any questions or difficulties, please send an email to (christoph.renkl@dal.ca).
-
+If you have any questions or difficulties, please send an email to [christoph.renkl@dal.ca](mailto:christoph.renkl@dal.ca).
 
 **Materials:**
 Please download the source code and data for this tutorial [here](https://github.com/christophrenkl/programming_tutorials/raw/master/Python/tutorial_01.zip).
