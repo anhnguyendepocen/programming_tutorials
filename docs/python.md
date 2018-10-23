@@ -4,7 +4,7 @@ title: Python Tutorials
 permalink: /python/
 ---
 
-#### 01: Intro to Python
+### [01: Intro to Python](/programming_tutorials/python-tutorial-01/)
 * Tour of Spyder
 * Simple operations
 * Data types
@@ -12,7 +12,7 @@ permalink: /python/
 * Reading in data
 * Basic plotting
 
-#### 02: Basic data wrangling
+### 02: Basic data wrangling
 * Numerical Python
 * Data exploration and formatting
 * Subsetting and indexing
