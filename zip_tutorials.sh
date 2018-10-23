@@ -2,12 +2,12 @@
 # Zip R tutorials for upload to GitHub
 
 # Define main tutorial directory
-MAINDIR='/Users/hansenjohnson/Projects/programming_tutorials/R'
-# MAINDIR='/home/chrenkl/Projects/programming_tutorials/R'
+#MAINDIR='/Users/hansenjohnson/Projects/programming_tutorials/R'
+MAINDIR='/home/chrenkl/Projects/programming_tutorials/Python'
 
 
 # Move to main directory
 cd $MAINDIR
 
 # Zip tutorial, recursively excluding all hidden files (loop later)
-zip -r tutorial_05.zip tutorial_05/ -x "*/\.*"
+zip -r tutorial_01.zip tutorial_01/ -x "*/\.*"
