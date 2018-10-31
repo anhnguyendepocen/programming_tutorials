@@ -13,8 +13,10 @@
 
 ### data
 
-/raw: Contains raw data used for this project. DO NOT EDIT
-/processed: Directory where processed data will be stored.
+#### /raw:
+Contains raw data used for this project. DO NOT EDIT  
+#### /processed:
+Directory where processed data will be stored.
 
 ### figures
 Directory where figures will be saved.
