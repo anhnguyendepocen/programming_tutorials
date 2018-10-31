@@ -59,12 +59,12 @@ Click [here](https://christophrenkl.github.io/programming_tutorials) for more in
 * Basic plotting
 
 #### 02: Basic data wrangling
-* Numerical Python
-* Data exploration and formatting
-* Subsetting and indexing
-* Working with date/time
-* Saving data
-* Customizing and saving plots
+* Indexing (Slicing)
+* Installing Packages
+* Indexing and Subsetting pandas DataFrames
+* Working with Date/Time
+* Advanced Plotting
+* Saving Data
 
 ### 03: Loops and conditions
 * Introduction to _for_ loops
