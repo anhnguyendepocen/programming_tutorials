@@ -25,8 +25,9 @@ permalink: /python/
 * List comprehensions
 * Introduction to logical statements (e.g., _if_,_else_, etc.)
 
-### 04: Custom functions
-* Writing and using your own functions
+### [04: for-Loops and Custom Functions](/programming_tutorials/python-tutorial-04/)
+* for-loops
+* custom functions and modules
 
 ### 05: Working with big datasets
 * Basic example of workflow from raw data to results
