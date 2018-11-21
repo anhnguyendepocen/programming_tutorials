@@ -20,10 +20,10 @@ permalink: /python/
 * Advanced Plotting
 * Saving Data
 
-### 03: Loops and conditions
-* Introduction to _for_ loops
-* List comprehensions
-* Introduction to logical statements (e.g., _if_,_else_, etc.)
+### [03: Numerical Python and Conditions ](/programming_tutorials/python-tutorial-03/)
+* Introduction to numerical Python with NumPy
+* Conditions
+* if-statements
 
 ### [04: for-Loops and Custom Functions](/programming_tutorials/python-tutorial-04/)
 * for-loops
