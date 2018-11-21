@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Python Tutorial 04: Geographical Mapping and Animations"
+title:  "Python Tutorial 05: Geographical Mapping and Animations"
 date:   2018-11-21
 categories: Python tutorials
 permalink: /python-tutorial-05/
